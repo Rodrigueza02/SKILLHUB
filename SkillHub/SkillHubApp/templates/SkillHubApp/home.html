@@ -31,7 +31,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #ffffff;
+            background-color: #b533ff; 
+            color: white;
             padding: 1rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -120,14 +121,29 @@
             background-color: #9c4dcc;
         }
 
-        .logout {
-            background-color: #ff5533;
-            margin-top: 0.5rem;
+        .header-nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: bold;
         }
 
-        .logout:hover {
-            background-color: #cc4422;
+        .header-nav ul li a:hover {
+            color: rgb(221, 221, 221); 
         }
+
+        a[href="{% url 'logout' %}"] {
+            color: black;
+            text-decoration: none;
+            transition: color 0.3s ease; 
+        }
+
+        a[href="{% url 'logout' %}"]:hover {
+            color: red;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -182,7 +198,7 @@
                     <img src="{% static 'SkillHubApp/images/perfil.png' %}" alt="Imagen de Perfil" class="profile-image">
                     <h2>Perfil</h2>
                     {% if user.is_authenticated %}
-                        <p>{{ user.username }}</p>
+                        <h3>{{ user.username }}</h3>
                         {% if user.first_name and user.last_name %}
                             <p>{{ user.first_name }} {{ user.last_name }}</p>
                         {% endif %}
@@ -190,7 +206,7 @@
                         <p>Invitado</p>
                     {% endif %}
                     <a href="{% url 'profile' %}" class="btn view-profile">Ver perfil</a>
-                    <a href="{% url 'logout' %}" class="btn logout">Cerrar sesión</a>
+                    <a href="{% url 'logout' %}">Cerrar sesión</a>
                 </div>
             </aside>
 
