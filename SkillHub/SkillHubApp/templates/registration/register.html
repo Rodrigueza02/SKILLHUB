@@ -3,19 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Registro - SkillHub</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'registration/css/styles.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #b533ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #9c4dcc;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2>Registro</h2>
+        <header class="header">
+            <h1>Registro en SkillHub</h1>
+        </header>
+        
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}  <!-- Renderiza el formulario -->
-            <button type="submit">Registrarse</button>
+            
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn">Registrarse</button>
         </form>
-        <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar sesión</a></p>
+        
+        <div class="login-link">
+            <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar sesión</a></p>
+        </div>
     </div>
 </body>
 </html>

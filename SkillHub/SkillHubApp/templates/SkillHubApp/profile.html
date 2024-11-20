@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - SkillHub</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'registration/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Inicio</a></li>
+                    <li><a href="{% url 'edit_profile' %}">Editar Perfil</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <h1>Mi Perfil</h1>
+            
+            <section>
+                <h2>Mis Habilidades</h2>
+                
+                <ul>
+                    {% for skill in skills %}
+                        <li>{{ skill.name }}</li>
+                    {% empty %}
+                        <li>Aún no has agregado habilidades</li>
+                    {% endfor %}
+                </ul>
+
+                <form method="post" action="{% url 'add_skill' %}">
+                    {% csrf_token %}
+                    <input type="text" name="skill_name" placeholder="Nueva habilidad" required>
+                    <button type="submit">Agregar Habilidad</button>
+                </form>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 SKILLHUB</p>
+        </footer>
+    </div>
+</body>
+</html>

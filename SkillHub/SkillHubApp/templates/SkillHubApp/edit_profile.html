@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil - SkillHub</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'registration/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Inicio</a></li>
+                    <li><a href="{% url 'profile' %}">Volver al Perfil</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="edit-profile-container">
+            <h1>Editar Perfil</h1>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h2>Información de Usuario</h2>
+                    {{ user_form.as_p }}
+                </div>
+
+                <div class="form-section">
+                    <h2>Cambiar Contraseña</h2>
+                    {{ password_form.as_p }}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <a href="{% url 'profile' %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 SKILLHUB</p>
+        </footer>
+    </div>
+</body>
+</html>

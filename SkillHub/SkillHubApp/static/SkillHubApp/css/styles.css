@@ -1,57 +1,51 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.container {
-    background: white;
+.edit-profile-container form {
+    max-width: 600px;
+    margin: 0 auto;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 90%;  /* Ajustable al 90% del ancho disponible */
-    max-width: 400px;  /* Limita el tamaño máximo */
-    min-width: 250px;  /* Limita el tamaño mínimo */
-    box-sizing: border-box;  /* Incluye el padding dentro del tamaño */
+    background-color: #f4f4f4;
+    border-radius: 8px;
 }
 
-h2 {
-    text-align: center;
-    color: #333;
+.form-section {
+    margin-bottom: 20px;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
+.form-section h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
 }
 
-input[type="text"],
-input[type="password"] {
-    width: 100%;
-    padding: 12px;  /* Más espacio interno para un aspecto más cómodo */
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;  /* Incluye el padding dentro del tamaño total */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #b533ff;
+.btn {
+    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
-    color: white;
-    font-size: 16px;
+    border-radius: 5px;
     cursor: pointer;
-    box-sizing: border-box;  /* Mantiene el tamaño correcto del botón */
 }
 
-button:hover {
-    background-color: #9c4dcc;  /* Cambio de color al pasar el ratón */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.messages .alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.messages .alert-success {
+    background-color: #d4edda;
+    color: #155724;
 }

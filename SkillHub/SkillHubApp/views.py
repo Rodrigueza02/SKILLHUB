@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm,UserChangeForm 
+from django.contrib.auth import login, authenticate, login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate, logout
-from .models import Message
+from .models import Message, Skill
 from .forms import MessageForm
-from django.contrib.auth.models import User
+from django.contrib import messages 
 
 def register(request):
     if request.method == 'POST':
@@ -31,9 +30,9 @@ def login_view(request):
             return render(request, 'registration/login.html', {'error_message': error_message})
     return render(request, 'registration/login.html')
 
-@login_required  
+@login_required
 def home_view(request):
-    return render(request, 'SkillHubApp/home.html')
+    return render(request, 'SkillHubApp/home.html', {'user': request.user})
 
 @login_required
 def messages_view(request):
@@ -80,3 +79,55 @@ def logout_view(request):
     logout(request) 
     return redirect('login')
 
+class CustomUserChangeForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        fields = ['username', 'email', 'first_name', 'last_name']
+        # Elimina campos sensibles como password
+        exclude = ('password',)
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        # Separa la validación y guardado de los formularios
+        user_form = CustomUserChangeForm(request.POST, instance=request.user)
+        password_form = PasswordChangeForm(request.user, request.POST)
+        
+        # Valida cada formulario por separado
+        user_form_valid = user_form.is_valid()
+        password_form_valid = password_form.is_valid()
+
+        if user_form_valid:
+            user_form.save()
+            messages.success(request, 'Información de perfil actualizada.')
+
+        if password_form_valid:
+            user = password_form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Contraseña actualizada exitosamente.')
+
+        # Redirige solo si al menos un formulario es válido
+        if user_form_valid or password_form_valid:
+            return redirect('profile')
+    else:
+        user_form = CustomUserChangeForm(instance=request.user)
+        password_form = PasswordChangeForm(request.user)
+    
+    return render(request, 'SkillHubApp/edit_profile.html', {
+        'user_form': user_form,
+        'password_form': password_form
+    })
+
+@login_required
+def add_skill(request):
+    if request.method == 'POST':
+        name = request.POST.get('skill_name')
+        # Lógica para crear una nueva habilidad
+        Skill.objects.create(user=request.user, name=name)
+        return redirect('profile')
+    return redirect('profile')
+
+@login_required
+def profile_view(request):
+    # Obtén las habilidades del usuario actual
+    skills = Skill.objects.filter(user=request.user)
+    return render(request, 'SkillHubApp/profile.html', {'skills': skills})
