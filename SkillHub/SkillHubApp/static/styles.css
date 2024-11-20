@@ -13,7 +13,10 @@ body {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 90%;  /* Ajustable al 90% del ancho disponible */
+    max-width: 400px;  /* Limita el tamaño máximo */
+    min-width: 250px;  /* Limita el tamaño mínimo */
+    box-sizing: border-box;  /* Incluye el padding dentro del tamaño */
 }
 
 h2 {
@@ -30,23 +33,25 @@ label {
 input[type="text"],
 input[type="password"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;  /* Más espacio interno para un aspecto más cómodo */
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box;  /* Incluye el padding dentro del tamaño total */
 }
 
 button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #b533ff;
     border: none;
     border-radius: 4px;
     color: white;
     font-size: 16px;
     cursor: pointer;
+    box-sizing: border-box;  /* Mantiene el tamaño correcto del botón */
 }
 
 button:hover {
-    background-color: #b533ff;
+    background-color: #9c4dcc;  /* Cambio de color al pasar el ratón */
 }
