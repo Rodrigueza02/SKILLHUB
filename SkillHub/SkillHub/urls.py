@@ -17,9 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from SkillHubApp.views import login_view  
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('SkillHubApp.urls')),  # Incluye las URLs de tu aplicación
-    path('accounts/', include('django.contrib.auth.urls')),  # Añade las URLs de autenticación
+    path('accounts/', include('SkillHubApp.urls')),
+    path('', login_view, name='login_view'),  
 ]

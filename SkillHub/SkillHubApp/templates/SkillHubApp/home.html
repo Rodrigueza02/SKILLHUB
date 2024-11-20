@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal</title>
+    <title>Página de Inicio</title>
 </head>
 <body>
-    <h1>Bienvenido, {{ user.username }}!</h1>
-    <p>Esta es la página principal después de iniciar sesión.</p>
-    <a href="{% url 'logout' %}">Cerrar Sesión</a>
+    <h1>Bienvenido a SkillHub</h1>
+    <p><a href="{% url 'login' %}">Iniciar Sesión</a></p>
+    <p><a href="{% url 'register' %}">Registrarse</a></p>
 </body>
 </html>
