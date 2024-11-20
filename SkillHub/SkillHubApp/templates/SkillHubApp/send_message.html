@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillHub - Home</title>
+    <title>Enviar Mensaje - SkillHub</title>
     {% load static %}
     <style>
-        /* Reset y estilos base */
         * {
             margin: 0;
             padding: 0;
@@ -143,9 +142,50 @@
             text-decoration: none;
             transition: color 0.3s ease;
         }
-        
+        .btn-secondary {
+            background-color: #6c757d;
+        }
 
-        /* Responsive Design */
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .send-message-section {
+            flex-grow: 1;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .send-message-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
@@ -167,9 +207,12 @@
             .search-bar input {
                 width: 100%;
             }
-        }
 
-        
+            .send-message-form {
+                width: 90%;
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -210,18 +253,28 @@
                 </div>
             </aside>
 
-            <section class="feed">
-                <h2>Publicaciones Recientes</h2>
-                <!-- Aquí irían las publicaciones -->
-                <div class="post">
-                    <p>Aún no hay publicaciones</p>
+            <section class="send-message-section">
+                <div class="send-message-form">
+                    <h2>Enviar Nuevo Mensaje</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Destinatario:</label>
+                            {{ form.recipient_username }}
+                        </div>
+                        <div class="form-group">
+                            <label>Mensaje:</label>
+                            {{ form.content }}
+                        </div>
+                        <button type="submit" class="btn">Enviar Mensaje</button>
+                        <a href="{% url 'messages' %}" class="btn btn-secondary">Cancelar</a>
+                    </form>
                 </div>
-            </section>
-        </main>
+            </section> </main>
 
-        <footer class="footer">
-            <p>&copy; 2024 SKILLHUB</p>
-        </footer>
-    </div>
-</body>
-</html>
+                <footer class="footer">
+                    <p>&copy; 2024 SKILLHUB</p>
+                </footer>
+            </div>
+        </body>
+    </html>

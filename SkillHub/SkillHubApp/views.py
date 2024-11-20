@@ -131,3 +131,18 @@ def profile_view(request):
     # Obtén las habilidades del usuario actual
     skills = Skill.objects.filter(user=request.user)
     return render(request, 'SkillHubApp/profile.html', {'skills': skills})
+
+@login_required
+def send_message_view(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.save()
+            messages.success(request, 'Mensaje enviado exitosamente')
+            return redirect('messages')
+    else:
+        form = MessageForm()
+    
+    return render(request, 'SkillHubApp/send_message.html', {'form': form})

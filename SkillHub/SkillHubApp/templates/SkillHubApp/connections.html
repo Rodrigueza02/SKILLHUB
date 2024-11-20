@@ -5,37 +5,228 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conexiones - SkillHub</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'registration/css/styles.css' %}">
+    <style>
+        /* Estilos exactamente iguales a home.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #b533ff; 
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo img {
+            max-height: 50px;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .header-nav ul li {
+            margin: 0 10px;
+        }
+
+        .search-bar {
+            display: flex;
+        }
+
+        .search-bar input {
+            padding: 0.5rem;
+            width: 250px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile {
+            text-align: center;
+        }
+
+        .profile-image {
+            max-width: 150px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .connections-list {
+            flex-grow: 1;
+            padding: 1rem;
+            background-color: #f9f9f9;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            background-color: #b533ff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #9c4dcc;
+        }
+
+        .header-nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .header-nav ul li a:hover {
+            color: rgb(221, 221, 221); 
+        }
+
+        .connection-item {
+            background-color: white;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        a[href="{% url 'logout' %}"] {
+            color: black;
+            text-decoration: none;
+            transition: color 0.3s ease; 
+        }
+
+        a[href="{% url 'logout' %}"]:hover {
+            color: red;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .header {
+                flex-direction: column;
+            }
+
+            .header-nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-bar input {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Conexiones</h1>
-            <nav>
+        <header class="header">
+            <div class="logo">
+                <img src="{% static 'SkillHubApp/images/logo.png' %}" alt="SkillHub Logo">
+            </div>
+            <h1>SKILLHUB</h1>
+            <nav class="header-nav">
                 <ul>
                     <li><a href="{% url 'home' %}">Inicio</a></li>
                     <li><a href="{% url 'messages' %}">Mensajes</a></li>
+                    <li><a href="{% url 'connections' %}">Conexiones</a></li>
                     <li><a href="{% url 'notifications' %}">Notificaciones</a></li>
-                    <li><a href="{% url 'connections' %}">Conexiones</a></li>  <!-- Asegúrate de que este enlace apunte a la vista de conexiones -->
-                    <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
                 </ul>
             </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar...">
+            </div>
         </header>
 
-        <main>
-            <h2>Tus Conexiones</h2>
-            <ul>
-                {% for connection in connections %}
-                    <li>{{ connection.username }} - {{ connection.status }}</li>
-                {% empty %}
-                    <li>No tienes conexiones.</li>
-                {% endfor %}
-            </ul>
-        </main>
-    </div>
+        <main class="main-content">
+            <aside class="sidebar">
+                <div class="profile">
+                    <img src="{% static 'SkillHubApp/images/perfil.png' %}" alt="Imagen de Perfil" class="profile-image">
+                    <h2>Perfil</h2>
+                    {% if user.is_authenticated %}
+                        <h3>{{ user.username }}</h3>
+                        {% if user.first_name and user.last_name %}
+                            <p>{{ user.first_name }} {{ user.last_name }}</p>
+                        {% endif %}
+                    {% else %}
+                        < <p>Invitado</p>
+                    {% endif %}
+                    <a href="{% url 'profile' %}" class="btn view-profile">Ver perfil</a>
+                    <a href="{% url 'logout' %}">Cerrar sesión</a>
+                </div>
+            </aside>
 
-    <footer>
-        <p>&copy; 2024 SKILLHUB</p>
-    </footer>
+            <section class="connections-list">
+                <h2>Conexiones</h2>
+                {% for connection in user.connections.all %}
+                    <div class="connection-item">
+                        <strong>{{ connection.username }}</strong>
+                        <p>{{ connection.first_name }} {{ connection.last_name }}</p>
+                    </div>
+                {% empty %}
+                    <p>No tienes conexiones.</p>
+                {% endfor %}
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 SKILLHUB</p>
+        </footer>
+    </div>
 </body>
 </html>
