@@ -3,6 +3,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
+from .models import Message
+from .forms import MessageForm
+from django.contrib.auth.models import User
 
 def register(request):
     if request.method == 'POST':
@@ -32,13 +35,27 @@ def login_view(request):
 def home_view(request):
     return render(request, 'SkillHubApp/home.html')
 
-@login_required  
+@login_required
 def messages_view(request):
-    messages = [
-        {"sender": "Usuario1", "content": "Hola, ¿cómo estás?"},
-        {"sender": "Usuario2", "content": "¿Te gustaría conectar?"},
-    ]
-    return render(request, 'SkillHubApp/messages.html', {'messages': messages})
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user  # Establece el remitente como el usuario actual
+            message.recipient = form.cleaned_data['recipient_username']  # Obtiene el destinatario
+            message.save()
+            return redirect('messages')  # Redirige a la vista de mensajes después de enviar
+    else:
+        form = MessageForm()
+
+    # Obtener mensajes recibidos por el usuario actual
+    received_messages = Message.objects.filter(recipient=request.user).order_by('-timestamp')
+    
+    return render(request, 'SkillHubApp/messages.html', {
+        'form': form,
+        'received_messages': received_messages,
+    })
+
 
 @login_required
 def notifications_view(request):

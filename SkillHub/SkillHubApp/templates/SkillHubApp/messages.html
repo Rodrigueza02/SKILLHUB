@@ -14,23 +14,30 @@
             <nav>
                 <ul>
                     <li><a href="{% url 'home' %}">Inicio</a></li>
-                    <li><a href="{% url 'messages' %}">Mensajes</a></li>
-                    <li><a href="{% url 'connections' %}">Conexiones</a></li>
                     <li><a href="{% url 'notifications' %}">Notificaciones</a></li>
-                    <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>  <!-- Botón de cerrar sesión -->
+                    <li><a href="{% url 'connections' %}">Conexiones</a></li>
+                    <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
                 </ul>
             </nav>
         </header>
 
         <main>
-            <h2>Tus Mensajes</h2>
+            <h2>Mensajes Recibidos</h2>
             <ul>
-                {% for message in messages %}
-                    <li><strong>{{ message.sender }}:</strong> {{ message.content }}</li>
+                {% for message in received_messages %}
+                    <li><strong>{{ message.sender.username }}:</strong> {{ message.content }} <em>{{ message.timestamp }}</em></li>
                 {% empty %}
                     <li>No tienes mensajes.</li>
                 {% endfor %}
             </ul>
+
+            <h2>Enviar un Mensaje</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.recipient_username.label_tag }} {{ form.recipient_username }}  <!-- Campo de destinatario -->
+                {{ form.content.label_tag }} {{ form.content }}  <!-- Campo de contenido -->
+                <button type="submit">Enviar</button>
+            </form>
         </main>
     </div>
 
