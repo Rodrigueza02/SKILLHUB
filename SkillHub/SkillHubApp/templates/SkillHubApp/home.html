@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkillHub - Home</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'registration/css/styles.css' %}"> -->
 </head>
 <body>
     <div class="container">
@@ -16,8 +16,8 @@
             <h1>SKILLHUB</h1>
             <nav>
                 <ul>
-                    <li><a href="#">Inicio</a></li>
-                    <li><a href="#">Conexiones</a></li>
+                    <li><a href="{% url 'home' %}">Inicio</a></li>  <!-- Cambia aquí -->
+                    <li><a href="{% url 'messages' %}">Mensajes</a></li>
                     <li><a href="#">Mensajes</a></li>
                     <li><a href="#">Notificaciones</a></li>
                 </ul>

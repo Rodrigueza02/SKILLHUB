@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajes - SkillHub</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'registration/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mensajes</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Inicio</a></li>
+                    <li><a href="{% url 'messages' %}">Mensajes</a></li>  <!-- Asegúrate de que este enlace apunte a la vista de mensajes -->
+                    <li><a href="#">Conexiones</a></li>
+                    <li><a href="#">Notificaciones</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <h2>Tus Mensajes</h2>
+            <ul>
+                {% for message in messages %}
+                    <li><strong>{{ message.sender }}:</strong> {{ message.content }}</li>
+                {% empty %}
+                    <li>No tienes mensajes.</li>
+                {% endfor %}
+            </ul>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 SKILLHUB</p>
+    </footer>
+</body>
+</html>
