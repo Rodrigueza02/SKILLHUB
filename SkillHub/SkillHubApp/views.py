@@ -26,3 +26,6 @@ def login_view(request):
             return render(request, 'registration/login.html', {'error_message': error_message})
     return render(request, 'registration/login.html')
 
+def home_view(request):
+    return render(request, 'SkillHubApp/home.html')  # Asegúrate de que la ruta sea correcta
+
