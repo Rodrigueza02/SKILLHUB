@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mensajes - SkillHub</title>
+    <title>Conexiones - SkillHub</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'registration/css/styles.css' %}">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Mensajes</h1>
+            <h1>Conexiones</h1>
             <nav>
                 <ul>
                     <li><a href="{% url 'home' %}">Inicio</a></li>
                     <li><a href="{% url 'messages' %}">Mensajes</a></li>
-                    <li><a href="{% url 'connections' %}">Conexiones</a></li>
                     <li><a href="{% url 'notifications' %}">Notificaciones</a></li>
-                    <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>  <!-- Botón de cerrar sesión -->
+                    <li><a href="{% url 'connections' %}">Conexiones</a></li>  <!-- Asegúrate de que este enlace apunte a la vista de conexiones -->
+                    <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
                 </ul>
             </nav>
         </header>
 
         <main>
-            <h2>Tus Mensajes</h2>
+            <h2>Tus Conexiones</h2>
             <ul>
-                {% for message in messages %}
-                    <li><strong>{{ message.sender }}:</strong> {{ message.content }}</li>
+                {% for connection in connections %}
+                    <li>{{ connection.username }} - {{ connection.status }}</li>
                 {% empty %}
-                    <li>No tienes mensajes.</li>
+                    <li>No tienes conexiones.</li>
                 {% endfor %}
             </ul>
         </main>

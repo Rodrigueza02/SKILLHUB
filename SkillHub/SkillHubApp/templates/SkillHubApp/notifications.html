@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillHub - Home</title>
+    <title>Notificaciones - SkillHub</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'registration/css/styles.css' %}">
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo">
-                <img src="{% static 'SkillHubApp/images/logo.png' %}" alt="SkillHub Logo">
-            </div>
-            <h1>SKILLHUB</h1>
+            <h1>Notificaciones</h1>
             <nav>
                 <ul>
                     <li><a href="{% url 'home' %}">Inicio</a></li>
@@ -23,23 +20,17 @@
                     <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>  <!-- Botón de cerrar sesión -->
                 </ul>
             </nav>
-            <div class="search-bar">
-                <input type="text" placeholder="Buscar...">
-            </div>
         </header>
 
-        <aside class="sidebar">
-            <div class="profile">
-                <img src="{% static 'SkillHubApp/images/perfil.png' %}" alt="Imagen de Perfil" class="profile-image">
-                <h2>Perfil</h2>
-                <p>Nombre de Usuario</p>
-                <button class="view-profile">Ver perfil</button>
-            </div>
-        </aside>
-
-        <main class="feed">
-            <h2>Publicaciones Recientes</h2>
-            <!-- Aquí irían las publicaciones -->
+        <main>
+            <h2>Tus Notificaciones</h2>
+            <ul>
+                {% for notification in notifications %}
+                    <li>{{ notification.content }}</li>
+                {% empty %}
+                    <li>No tienes notificaciones.</li>
+                {% endfor %}
+            </ul>
         </main>
     </div>
 

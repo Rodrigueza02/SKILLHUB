@@ -128,3 +128,5 @@ LOGIN_REDIRECT_URL = '/'
 STATIC_URL = '/static/'
 
 LANGUAGE_CODE = 'es-es'
+
+LOGIN_URL = '/login/'
