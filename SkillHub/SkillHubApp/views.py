@@ -47,7 +47,7 @@ def home_view(request):
     else:
         form = PostForm()
 
-    return render(request, 'SkillHubApp/home.html', {
+    return render(request, 'SkillHubApp/inicio/home.html', {
         'user': request.user,
         'posts': posts,
         'form': form,
@@ -69,7 +69,7 @@ def messages_view(request):
     # Obtener mensajes recibidos por el usuario actual
     received_messages = Message.objects.filter(recipient=request.user).order_by('-timestamp')
     
-    return render(request, 'SkillHubApp/messages.html', {
+    return render(request, 'SkillHubApp/mensajes/messages.html', {
         'form': form,
         'received_messages': received_messages,
     })
@@ -91,7 +91,7 @@ def connections_view(request):
         {"username": "Usuario2", "status": "Conectado"},
         {"username": "Usuario3", "status": "Pendiente"},
     ]
-    return render(request, 'SkillHubApp/connections.html', {'connections': connections})
+    return render(request, 'SkillHubApp/conexiones/connections.html', {'connections': connections})
 
 @login_required
 def logout_view(request):
@@ -165,7 +165,7 @@ def send_message_view(request):
     else:
         form = MessageForm()
     
-    return render(request, 'SkillHubApp/send_message.html', {'form': form})
+    return render(request, 'SkillHubApp/mensajes/send_message.html', {'form': form})
 
 @login_required
 def create_post_view(request):
@@ -182,4 +182,4 @@ def create_post_view(request):
     else:
         form = PostForm()
     
-    return render(request, 'SkillHubApp/create_post.html', {'form': form})
+    return render(request, 'SkillHubApp/inicio/create_post.html', {'form': form})
