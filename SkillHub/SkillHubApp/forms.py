@@ -1,5 +1,5 @@
 from django import forms
-from .models import Message
+from .models import Message, Post
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
@@ -88,3 +88,61 @@ class CustomRegisterForm(UserCreationForm):
             user.save()
         
         return user
+    
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['content', 'media_file']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'rows': 4, 
+                'placeholder': 'Escribe tu publicación aquí...',
+                'class': 'form-control'
+            }),
+            'media_file': forms.FileInput(attrs={
+                'class': 'form-control',
+                'accept': 'image/*,video/*,audio/*,application/pdf,application/msword'
+            })
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        content = cleaned_data.get('content')
+        media_file = cleaned_data.get('media_file')
+
+        # Validar que al menos un campo tenga contenido
+        if not content and not media_file:
+            raise forms.ValidationError("Debe proporcionar contenido de texto o un archivo multimedia.")
+
+        return cleaned_data
+
+    class Meta:
+        model = Post
+        fields = ['content', 'media_type', 'media_file']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'rows': 4, 
+                'placeholder': 'Escribe tu publicación aquí...',
+                'class': 'form-control'
+            }),
+            'media_file': forms.FileInput(attrs={
+                'class': 'form-control',
+                'accept': 'image/*,video/*,audio/*,application/pdf,application/msword'
+            })
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        content = cleaned_data.get('content')
+        media_file = cleaned_data.get('media_file')
+        media_type = cleaned_data.get('media_type')
+
+        # Validar que al menos un campo tenga contenido
+        if not content and not media_file:
+            raise forms.ValidationError("Debe proporcionar contenido de texto o un archivo multimedia.")
+
+        # Validar que si se selecciona un tipo de medio, se adjunte un archivo
+        if media_type and not media_file:
+            raise forms.ValidationError("Debe adjuntar un archivo si selecciona un tipo de medio.")
+
+        return cleaned_data

@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm,UserChangeForm 
 from django.contrib.auth import login, authenticate, login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from .models import Message, Skill
-from .forms import MessageForm, CustomRegisterForm  
+from .models import Message, Skill, Post
+from .forms import MessageForm, CustomRegisterForm, PostForm
 from django.contrib import messages 
 
 def register(request):
@@ -32,7 +32,26 @@ def login_view(request):
 
 @login_required
 def home_view(request):
-    return render(request, 'SkillHubApp/home.html', {'user': request.user})
+    # Obtener todas las publicaciones ordenadas por timestamp
+    posts = Post.objects.all().order_by('-timestamp')
+    
+    # Configurar el formulario para crear publicaciones
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            messages.success(request, 'Publicación creada exitosamente')
+            return redirect('home')
+    else:
+        form = PostForm()
+
+    return render(request, 'SkillHubApp/home.html', {
+        'user': request.user,
+        'posts': posts,
+        'form': form,
+    })
 
 @login_required
 def messages_view(request):
@@ -147,3 +166,20 @@ def send_message_view(request):
         form = MessageForm()
     
     return render(request, 'SkillHubApp/send_message.html', {'form': form})
+
+@login_required
+def create_post_view(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            messages.success(request, 'Publicación creada exitosamente')
+            return redirect('home')
+        else:
+            messages.error(request, 'Por favor, revisa los errores en el formulario')
+    else:
+        form = PostForm()
+    
+    return render(request, 'SkillHubApp/create_post.html', {'form': form})
