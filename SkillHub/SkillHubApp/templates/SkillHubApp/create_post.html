@@ -6,49 +6,23 @@
     <title>Crear Publicación - SkillHub</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'SkillHubApp/css/style.css' %}">
+    {{ form.media }}  {# Incluir recursos de CKEditor #}
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <div class="logo">
-                <img src="{% static 'SkillHubApp/images/logo.png' %}" alt="SkillHub Logo">
-            </div>
-            <h1>Crear Publicación</h1>
-            <nav class="header-nav">
-                <ul>
-                    <li><a href="{% url 'home' %}">Inicio</a></li>
-                    <li><a href="{% url 'messages' %}">Mensajes</a></li>
-                    <li><a href="{% url 'connections' %}">Conexiones</a></li>
-                    <li><a href="{% url 'notifications' %}">Notificaciones</a></li>
-                </ul>
-            </nav>
-            <div class="search-bar">
-                <input type="text" placeholder="Buscar...">
-            </div>
+            <!-- Encabezado existente -->
         </header>
 
         <main class="main-content">
             <aside class="sidebar">
-                <div class="profile">
-                    <img src="{% static 'SkillHubApp/images/perfil.png' %}" alt="Imagen de Perfil" class="profile-image">
-                    <h2>Perfil</h2>
-                    {% if user.is_authenticated %}
-                        <h3>{{ user.username }}</h3>
-                        {% if user.first_name and user.last_name %}
-                            <p>{{ user.first_name }} {{ user.last_name }}</p>
-                        {% endif %}
-                    {% else %}
-                        <p>Invitado</p>
-                    {% endif %}
-                    <a href="{% url 'profile' %}" class="btn">Ver perfil</a>
-                    <a href="{% url 'logout' %}">Cerrar sesión</a>
-                </div>
+                <!-- Sidebar existente -->
             </aside>
 
             <div class="create-post-section">
                 <div class="create-post-form">
-                    <form method="post" enctype="multipart/form-data" id="create-post-form">
-                         {% csrf_token %}
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
                         
                         {% if messages %}
                             <div class="messages">
@@ -61,7 +35,19 @@
                         {% endif %}
 
                         <div class="form-group">
-                            <label for="{{ form.content.id_for_label }}">Contenido de la Publicación:</label>
+                            <label for="{{ form.title.id_for_label }}">Título del Artículo:</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="error-message">
+                                    {% for error in form.title.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.content.id_for_label }}">Contenido:</label>
                             {{ form.content }}
                             {% if form.content.errors %}
                                 <div class="error-message">
@@ -73,7 +59,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="{{ form.media_file.id_for_label }}">Adjuntar Archivo:</label>
+                            <label for="{{ form.media_type.id_for_label }}">Tipo de Publicación:</label>
+                            {{ form.media_type }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.media_file.id_for_label }}">Archivo Adjunto (Opcional):</label>
                             {{ form.media_file }}
                             <small class="help-text">
                                 Formatos permitidos: 
@@ -81,29 +72,10 @@
                                 Videos (mp4, avi), 
                                 Audio (mp3, wav), 
                                 Documentos (pdf, doc)
-                                Tamaño máximo: 50MB
                             </small>
-                            {% if form.media_file.errors %}
-                                <div class="error-message">
-                                    {% for error in form.media_file.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
                         </div>
 
-                        <div class="file-preview" id="file-preview">
-                            <!-- Aquí se mostrarán las previsualizaciones -->
-                        </div>
-
-                        <div class="legal-notice">
-                            <p>
-                                Al publicar, acepta que tiene todos los derechos 
-                                necesarios sobre el contenido.
-                            </p>
-                        </div>
-
-                        <button type="submit" class="btn">Publicar</button>
+                        <button type="submit" class="btn">Publicar Artículo</button>
                         <a href="{% url 'home' %}" class="btn btn-secondary">Cancelar</a>
                     </form>
                 </div>

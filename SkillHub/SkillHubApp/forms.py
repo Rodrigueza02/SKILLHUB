@@ -3,6 +3,7 @@ from .models import Message, Post
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from ckeditor.widgets import CKEditorWidget
 
 class MessageForm(forms.ModelForm):
     recipient_username = forms.CharField(label='Destinatario', max_length=150)
@@ -92,11 +93,14 @@ class CustomRegisterForm(UserCreationForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['content', 'media_file']
+        fields = ['title', 'content', 'media_type', 'media_file']
         widgets = {
-            'content': forms.Textarea(attrs={
-                'rows': 4, 
-                'placeholder': 'Escribe tu publicación aquí...',
+            'title': forms.TextInput(attrs={
+                'placeholder': 'Título del artículo',
+                'class': 'form-control'
+            }),
+            'content': CKEditorWidget(config_name='default'),
+            'media_type': forms.Select(attrs={
                 'class': 'form-control'
             }),
             'media_file': forms.FileInput(attrs={
@@ -109,13 +113,18 @@ class PostForm(forms.ModelForm):
         cleaned_data = super().clean()
         content = cleaned_data.get('content')
         media_file = cleaned_data.get('media_file')
+        media_type = cleaned_data.get('media_type')
 
-        # Validar que al menos un campo tenga contenido
+        # Validaciones
         if not content and not media_file:
             raise forms.ValidationError("Debe proporcionar contenido de texto o un archivo multimedia.")
 
-        return cleaned_data
+        # Validar longitud del contenido
+        if content and len(content) > 800:
+            raise forms.ValidationError("El contenido no debe superar los 800 caracteres.")
 
+        return cleaned_data
+    
     class Meta:
         model = Post
         fields = ['content', 'media_type', 'media_file']

@@ -48,7 +48,9 @@
             <section class="messages-section">
                 <div class="messages-header">
                     <h2>Mensajes Recibidos</h2>
-                    <a href="{% url 'send_message' %}" class="btn send-message-btn">Enviar Mensaje</a>
+                    <div class="messages-actions">
+                        <a href="{% url 'send_message' %}" class="btn send-message-btn">Enviar Mensaje</a>
+                    </div>
                 </div>
                 
                 {% for message in received_messages %}

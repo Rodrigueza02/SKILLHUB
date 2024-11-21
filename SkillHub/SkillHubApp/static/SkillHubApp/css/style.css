@@ -175,11 +175,13 @@ margin-right: 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 20px;
 }
-.messages-header {
-    flex-direction: column;
+
+.messages-actions {
+    text-align: right;
 }
+
 
 .btn-secondary {
     background-color: #6c757d;
