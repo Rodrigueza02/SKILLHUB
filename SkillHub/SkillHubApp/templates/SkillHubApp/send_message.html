@@ -186,6 +186,11 @@
             border-radius: 4px;
         }
 
+        .error-message {
+            color: red;
+            margin-top: 0.5rem;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
@@ -261,6 +266,9 @@
                         <div class="form-group">
                             <label>Destinatario:</label>
                             {{ form.recipient_username }}
+                            {% for error in form.recipient_username.errors %}
+                                <div class="error-message">{{ error }}</div>
+                            {% endfor %}
                         </div>
                         <div class="form-group">
                             <label>Mensaje:</label>

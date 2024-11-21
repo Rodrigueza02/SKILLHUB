@@ -3,18 +3,18 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm,UserC
 from django.contrib.auth import login, authenticate, login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .models import Message, Skill
-from .forms import MessageForm
+from .forms import MessageForm, CustomRegisterForm  
 from django.contrib import messages 
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('home')
     else:
-        form = UserCreationForm()
+        form = CustomRegisterForm()
     return render(request, 'registration/register.html', {'form': form})
 
 def login_view(request):
@@ -139,6 +139,7 @@ def send_message_view(request):
         if form.is_valid():
             message = form.save(commit=False)
             message.sender = request.user
+            message.recipient = form.cleaned_data['recipient_username']
             message.save()
             messages.success(request, 'Mensaje enviado exitosamente')
             return redirect('messages')
