@@ -54,6 +54,29 @@ def home_view(request):
     })
 
 @login_required
+def home_company_view(request):
+    # Obtener todas las publicaciones ordenadas por timestamp
+    posts = Post.objects.all().order_by('-timestamp')
+    
+    # Configurar el formulario para crear publicaciones
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            messages.success(request, 'Publicación creada exitosamente')
+            return redirect('home-company')
+    else:
+        form = PostForm()
+
+    return render(request, 'SkillHubApp/inicio/home_company_view', {
+        'user': request.user,
+        'posts': posts,
+        'form': form,
+    })
+
+@login_required
 def messages_view(request):
     if request.method == 'POST':
         form = MessageForm(request.POST)
@@ -82,7 +105,7 @@ def notifications_view(request):
         {"content": "Usuario2 ha comentado en tu publicación."},
         {"content": "Usuario3 te ha seguido."},
     ]
-    return render(request, 'SkillHubApp/notifications.html', {'notifications': notifications})
+    return render(request, 'SkillHubApp/notificaciones/notifications.html', {'notifications': notifications})
 
 @login_required
 def connections_view(request):
