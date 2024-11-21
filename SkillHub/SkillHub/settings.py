@@ -152,20 +152,3 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': 'colorbutton,font',
     },
 }
-
-# python manage.py runserver 0.0.0.0:8000
-
-# Eliminar migraciones
-#find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-
-# Eliminar base de datos
-#rm db.sqlite3
-
-# Crear nuevas migraciones
-#python manage.py makemigrations
-
-# Aplicar migraciones
-#python manage.py migrate
-
-# Crear superusuario
-#python manage.py createsuperuser

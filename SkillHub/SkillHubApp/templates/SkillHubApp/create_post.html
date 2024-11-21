@@ -10,15 +10,7 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <!-- Encabezado existente -->
-        </header>
-
         <main class="main-content">
-            <aside class="sidebar">
-                <!-- Sidebar existente -->
-            </aside>
-
             <div class="create-post-section">
                 <div class="create-post-form">
                     <form method="post" enctype="multipart/form-data">
@@ -56,11 +48,6 @@
                                     {% endfor %}
                                 </div>
                             {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.media_type.id_for_label }}">Tipo de Publicación:</label>
-                            {{ form.media_type }}
                         </div>
 
                         <div class="form-group">

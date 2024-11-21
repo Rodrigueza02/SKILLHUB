@@ -1,25 +1,10 @@
 from django import forms
-from .models import Message, Post
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from ckeditor.widgets import CKEditorWidget
+from .models import Message, Post, Skill
 
-class MessageForm(forms.ModelForm):
-    recipient_username = forms.CharField(label='Destinatario', max_length=150)
-
-    class Meta:
-        model = Message
-        fields = ['content']  # Eliminamos recipient_username de aquí
-
-    def clean_recipient_username(self):
-        username = self.cleaned_data.get('recipient_username')
-        try:
-            recipient = User.objects.get(username=username)
-            return recipient
-        except User.DoesNotExist:
-            raise forms.ValidationError("El usuario no existe.")
-        
 class CustomRegisterForm(UserCreationForm):
     ACCOUNT_TYPES = [
         ('professional', 'Profesional'),
@@ -64,14 +49,12 @@ class CustomRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'account_type', 'password1', 'password2']
 
     def clean_email(self):
-        # Validar que el correo electrónico sea único
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise ValidationError("Ya existe un usuario registrado con este correo electrónico.")
         return email
 
     def clean_password2(self):
-        # Validar que las contraseñas coincidan
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
         
@@ -81,7 +64,6 @@ class CustomRegisterForm(UserCreationForm):
         return password2
 
     def save(self, commit=True):
-        # Guardar usuario y tipo de cuenta
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
         
@@ -89,20 +71,32 @@ class CustomRegisterForm(UserCreationForm):
             user.save()
         
         return user
-    
+
+class MessageForm(forms.ModelForm):
+    recipient_username = forms.CharField(label='Destinatario', max_length=150)
+
+    class Meta:
+        model = Message
+        fields = ['content']
+
+    def clean_recipient_username(self):
+        username = self.cleaned_data.get('recipient_username')
+        try:
+            recipient = User.objects.get(username=username)
+            return recipient
+        except User.DoesNotExist:
+            raise forms.ValidationError("El usuario no existe.")
+
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'media_type', 'media_file']
+        fields = ['title', 'content', 'media_file']
         widgets = {
             'title': forms.TextInput(attrs={
                 'placeholder': 'Título del artículo',
                 'class': 'form-control'
             }),
             'content': CKEditorWidget(config_name='default'),
-            'media_type': forms.Select(attrs={
-                'class': 'form-control'
-            }),
             'media_file': forms.FileInput(attrs={
                 'class': 'form-control',
                 'accept': 'image/*,video/*,audio/*,application/pdf,application/msword'
@@ -113,7 +107,6 @@ class PostForm(forms.ModelForm):
         cleaned_data = super().clean()
         content = cleaned_data.get('content')
         media_file = cleaned_data.get('media_file')
-        media_type = cleaned_data.get('media_type')
 
         # Validaciones
         if not content and not media_file:
@@ -124,34 +117,20 @@ class PostForm(forms.ModelForm):
             raise forms.ValidationError("El contenido no debe superar los 800 caracteres.")
 
         return cleaned_data
-    
+
+class SkillForm(forms.ModelForm):
     class Meta:
-        model = Post
-        fields = ['content', 'media_type', 'media_file']
+        model = Skill
+        fields = ['name']
         widgets = {
-            'content': forms.Textarea(attrs={
-                'rows': 4, 
-                'placeholder': 'Escribe tu publicación aquí...',
+            'name': forms.TextInput(attrs={
+                'placeholder': 'Nombre de la habilidad',
                 'class': 'form-control'
-            }),
-            'media_file': forms.FileInput(attrs={
-                'class': 'form-control',
-                'accept': 'image/*,video/*,audio/*,application/pdf,application/msword'
             })
         }
 
-    def clean(self):
-        cleaned_data = super().clean()
-        content = cleaned_data.get('content')
-        media_file = cleaned_data.get('media_file')
-        media_type = cleaned_data.get('media_type')
-
-        # Validar que al menos un campo tenga contenido
-        if not content and not media_file:
-            raise forms.ValidationError("Debe proporcionar contenido de texto o un archivo multimedia.")
-
-        # Validar que si se selecciona un tipo de medio, se adjunte un archivo
-        if media_type and not media_file:
-            raise forms.ValidationError("Debe adjuntar un archivo si selecciona un tipo de medio.")
-
-        return cleaned_data
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if not name:
+            raise forms.ValidationError("El nombre de la habilidad no puede estar vacío.")
+        return name

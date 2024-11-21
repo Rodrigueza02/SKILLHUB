@@ -65,24 +65,11 @@ class Post(models.Model):
     """
     Modelo de publicaciones con soporte multimedia
     """
-    MEDIA_TYPES = [
-        ('article', 'Artículo'),
-        ('image', 'Imagen'),
-        ('video', 'Video'),
-        ('audio', 'Audio'),
-        ('document', 'Documento')
-    ]
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, blank=True, null=True)
     content = RichTextField(max_length=800)
     timestamp = models.DateTimeField(auto_now_add=True)
     
-    media_type = models.CharField(
-        max_length=20, 
-        choices=MEDIA_TYPES, 
-        default='article'
-    )
     media_file = models.FileField(
         upload_to='post_media/', 
         validators=[
