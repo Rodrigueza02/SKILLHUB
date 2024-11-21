@@ -131,7 +131,7 @@ def edit_profile(request):
         user_form = CustomUserChangeForm(instance=request.user)
         password_form = PasswordChangeForm(request.user)
     
-    return render(request, 'SkillHubApp/edit_profile.html', {
+    return render(request, 'SkillHubApp/perfiles/edit_profile.html', {
         'user_form': user_form,
         'password_form': password_form
     })
@@ -149,7 +149,7 @@ def add_skill(request):
 def profile_view(request):
     # Obtén las habilidades del usuario actual
     skills = Skill.objects.filter(user=request.user)
-    return render(request, 'SkillHubApp/profile.html', {'skills': skills})
+    return render(request, 'SkillHubApp/perfiles/profile.html', {'skills': skills})
 
 @login_required
 def send_message_view(request):
