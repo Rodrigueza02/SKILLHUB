@@ -52,7 +52,7 @@
                         <a href="{% url 'create_post' %}" class="btn nueva-publicacion-btn">Nueva Publicación</a>
                         <a href="{% url 'manage_applications' %}" class="btn nueva-publicacion-btn">Gestión de postulaciones</a>
                     </div>
-                    
+            
                     {% if messages %}
                         <div class="messages">
                             {% for message in messages %}
@@ -62,41 +62,37 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    
-                    {% for post in posts %}
-                        <div class="post-card">
-                            <div class="posts-header">
-                                <h2>Publicaciones Recientes</h2>
-                                <a href="{% url 'create_post' %}" class="btn nueva-publicacion-btn" style="margin-right: 5px;">Nueva Publicación</a>
-                                <a href="{% url 'manage_applications' %}" class="btn nueva-publicacion-btn">Gestión de postulaciones</a>
+            
+                    <div class="posts-container">
+                        {% for post in posts %}
+                            <div class="post-card">
+                                <h3>{{ post.title }}</h3>
+                                <p>{{ post.content }}</p>
+            
+                                {% if post.media_file %}
+                                    {% with file_extension=post.media_file.name|lower|slice:"-3:" %}
+                                        {% if file_extension in 'jpg,png,gif,jpeg' %}
+                                            <img src="{{ post.media_file.url }}" alt="Imagen de publicación" class="post-media">
+                                        {% elif file_extension in 'mp4,avi,mov' %}
+                                            <video controls class="post-media">
+                                                <source src="{{ post.media_file.url }}" type="video/mp4">
+                                                Tu navegador no soporta videos.
+                                            </video>
+                                        {% elif file_extension in 'mp3,wav,ogg' %}
+                                            <audio controls class="post-media">
+                                                <source src="{{ post.media_file.url }}" type="audio/mpeg">
+                                                Tu navegador no soporta audio.
+                                            </audio>
+                                        {% elif file_extension in 'pdf,doc,docx' %}
+                                            <a href="{{ post.media_file.url }}" target="_blank">Ver documento: {{ post.media_file.name }}</a>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endif %}
                             </div>
-                            <p>{{ post.content }}</p>
-                            
-                            {% if post.media_file %}
-                                {% with file_extension=post.media_file.name|lower|slice:"-3:" %}
-                                    {% if file_extension in 'jpg,png,gif,jpeg' %}
-                                        <img src="{{ post.media_file.url }}" alt="Imagen de publicación" style="max-width: 100%; border-radius: 4px;">
-                                    {% elif file_extension in 'mp4,avi,mov' %}
-                                        <video controls style="max-width: 100%; border-radius: 4px;">
-                                            <source src="{{ post.media_file.url }}" type="video/mp4">
-                                            Tu navegador no soporta videos.
-                                        </video>
-                                    {% elif file_extension in 'mp3,wav,ogg' %}
-                                        <audio controls style="max-width: 100%;">
-                                            <source src="{{ post.media_file.url }}" type="audio/mpeg">
-                                            Tu navegador no soporta audio.
-                                        </audio>
-                                    {% elif file_extension in 'pdf,doc,docx' %}
-                                        <a href="{{ post.media_file.url }}" target="_blank">
-                                            Ver documento: {{ post.media_file.name }}
-                                        </a>
-                                    {% endif %}
-                                {% endwith %}
-                            {% endif %}
-                        </div>
-                    {% empty %}
-                        <p>No hay publicaciones aún.</p>
-                    {% endfor %}
+                        {% empty %}
+                            <p>No hay publicaciones aún.</p>
+                        {% endfor %}
+                    </div>
                 </div>
             </section>
         </main>

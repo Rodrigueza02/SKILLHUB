@@ -110,6 +110,56 @@ class PostForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         content = cleaned_data.get('content')
+
+        # Eliminar espacios en blanco al principio y al final del contenido
+        if content:
+            cleaned_data['content'] = content.strip()
+
+        # Validaciones
+        if not content and not cleaned_data.get('media_file'):
+            raise forms.ValidationError("Debe proporcionar contenido de texto o un archivo multimedia.")
+
+        # Validar longitud del contenido
+        if content and len(content) > 800:
+            raise forms.ValidationError("El contenido no debe superar los 800 caracteres.")
+
+        return cleaned_data
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'media_file']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'placeholder': 'Título del artículo',
+                'class': 'form-control'
+            }),
+            'content': CKEditorWidget(config_name='default'),
+            'media_file': forms.FileInput(attrs={
+                'class': 'form-control',
+                'accept': 'image/*,video/*,audio/*,application/pdf,application/msword'
+            })
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        content = cleaned_data.get('content')
+
+        # Eliminar espacios en blanco al principio y al final del contenido
+        if content:
+            cleaned_data['content'] = content.strip()
+
+        # Validaciones
+        if not content and not cleaned_data.get('media_file'):
+            raise forms.ValidationError("Debe proporcionar contenido de texto o un archivo multimedia.")
+
+        # Validar longitud del contenido
+        if content and len(content) > 800:
+            raise forms.ValidationError("El contenido no debe superar los 800 caracteres.")
+
+        return cleaned_data
+
+    def clean(self):
+        cleaned_data = super().clean()
+        content = cleaned_data.get('content')
         media_file = cleaned_data.get('media_file')
 
         # Validaciones

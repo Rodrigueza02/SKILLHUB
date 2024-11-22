@@ -380,6 +380,28 @@ a[href="{% url 'logout' %}"]:hover {
     gap: 10px; /* Espacio entre los botones */
 }
 
+.posts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espaciado entre tarjetas */
+}
+
+.post-card {
+    background-color: white;
+    border: 1px solid #ddd; /* Borde alrededor de la tarjeta */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 15px; /* Espaciado interno */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra para un efecto de profundidad */
+    flex: 1 1 calc(33% - 20px); /* Ajusta el ancho de la tarjeta */
+    min-width: 250px; /* Ancho mínimo */
+}
+
+.post-media {
+    max-width: 100%; /* Asegura que el medio no exceda el ancho de la tarjeta */
+    border-radius: 4px; /* Bordes redondeados para el medio */
+    margin-top: 10px; /* Espaciado superior */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
