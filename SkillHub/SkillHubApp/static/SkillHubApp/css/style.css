@@ -125,15 +125,15 @@ body {
 }
 
 a[href="{% url 'logout' %}"] {
-    color: black;
-    text-decoration: none;
-    transition: color 0.3s ease; 
+    color: black !important; /* Color del texto */
+    text-decoration: none !important; /* Sin subrayado */
+    font-weight: bold !important; /* Texto en negrita */
+    transition: color 0.3s ease; /* Transición suave para el hover */
 }
 
 a[href="{% url 'logout' %}"]:hover {
-    color: red;
-    text-decoration: none;
-    transition: color 0.3s ease;
+    color: red !important; /* Color del texto al pasar el mouse */
+    font-weight: bold !important; /* Texto en negrita en hover */
 }
 
 .posts-header {
@@ -361,6 +361,18 @@ margin-right: 0px;
     width: 80%;
     max-width: 500px;
     border-radius: 8px;
+}
+
+a[href="{% url 'logout' %}"] {
+    color: black; /* Color del texto */
+    text-decoration: none; /* Sin subrayado */
+    font-weight: bold; /* Texto en negrita */
+    transition: color 0.3s ease; /* Transición suave para el hover */
+}
+
+a[href="{% url 'logout' %}"]:hover {
+    color: red; /* Color del texto al pasar el mouse */
+    font-weight: bold; /* Texto en negrita en hover */
 }
 
 /* Responsive Design */

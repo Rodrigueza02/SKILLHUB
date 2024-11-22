@@ -37,8 +37,6 @@
                         {% if user.first_name and user.last_name %}
                             <p>{{ user.first_name }} {{ user.last_name }}</p>
                         {% endif %}
-                    {% else %}
-                        < <p>Invitado</p>
                     {% endif %}
                     <a href="{% if user.profile.account_type == 'professional' %}{% url 'profile-professional' %}{% else %}{% url 'profile-company' %}{% endif %}" class="btn">Ver perfil</a>
                     <a href="{% url 'logout' %}">Cerrar sesión</a>
