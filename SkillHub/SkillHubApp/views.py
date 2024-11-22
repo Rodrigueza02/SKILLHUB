@@ -11,8 +11,12 @@ def register(request):
         form = CustomRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('home')
+            login(request, user)  # Iniciar sesión inmediatamente después de registrarse
+            # Redirigir según el tipo de cuenta
+            if form.cleaned_data['account_type'] == 'professional':
+                return redirect('home-professional')  # Redirigir a home_professional
+            elif form.cleaned_data['account_type'] == 'company':
+                return redirect('home-company')  # Redirigir a home-company
     else:
         form = CustomRegisterForm()
     return render(request, 'registration/register.html', {'form': form})
@@ -24,14 +28,19 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            # Redirigir según el tipo de cuenta
+            if hasattr(user, 'profile'):
+                if user.profile.account_type == 'professional':
+                    return redirect('home-professional')  # Redirigir a home_professional
+                elif user.profile.account_type == 'company':
+                    return redirect('home-company')  # Redirigir a home-company
         else:
             error_message = "Nombre de usuario o contraseña incorrectos."
             return render(request, 'registration/login.html', {'error_message': error_message})
     return render(request, 'registration/login.html')
 
 @login_required
-def home_view(request):
+def home_professional_view(request):
     # Obtener todas las publicaciones ordenadas por timestamp
     posts = Post.objects.all().order_by('-timestamp')
     
@@ -43,11 +52,11 @@ def home_view(request):
             post.user = request.user
             post.save()
             messages.success(request, 'Publicación creada exitosamente')
-            return redirect('home')
+            return redirect('home-professional')
     else:
         form = PostForm()
 
-    return render(request, 'SkillHubApp/inicio/home.html', {
+    return render(request, 'SkillHubApp/inicio/home_professional.html', {
         'user': request.user,
         'posts': posts,
         'form': form,
@@ -70,7 +79,7 @@ def home_company_view(request):
     else:
         form = PostForm()
 
-    return render(request, 'SkillHubApp/inicio/home_company_view', {
+    return render(request, 'SkillHubApp/inicio/home-company.html', {
         'user': request.user,
         'posts': posts,
         'form': form,
@@ -128,7 +137,7 @@ class CustomUserChangeForm(UserChangeForm):
         exclude = ('password',)
 
 @login_required
-def edit_profile(request):
+def edit_profile_professional(request):
     if request.method == 'POST':
         # Separa la validación y guardado de los formularios
         user_form = CustomUserChangeForm(request.POST, instance=request.user)
@@ -154,7 +163,7 @@ def edit_profile(request):
         user_form = CustomUserChangeForm(instance=request.user)
         password_form = PasswordChangeForm(request.user)
     
-    return render(request, 'SkillHubApp/perfiles/edit_profile.html', {
+    return render(request, 'SkillHubApp/perfiles/edit_profile_professional.html', {
         'user_form': user_form,
         'password_form': password_form
     })
@@ -169,10 +178,10 @@ def add_skill(request):
     return redirect('profile')
 
 @login_required
-def profile_view(request):
+def profile_professional_view(request):
     # Obtén las habilidades del usuario actual
     skills = Skill.objects.filter(user=request.user)
-    return render(request, 'SkillHubApp/perfiles/profile.html', {'skills': skills})
+    return render(request, 'SkillHubApp/perfiles/profile_professional.html', {'skills': skills})
 
 @login_required
 def send_message_view(request):
@@ -199,10 +208,16 @@ def create_post_view(request):
             post.user = request.user
             post.save()
             messages.success(request, 'Publicación creada exitosamente')
-            return redirect('home')
+
+            # Redirigir según el tipo de cuenta
+            if hasattr(request.user, 'profile'):
+                if request.user.profile.account_type == 'professional':
+                    return redirect('home-professional')  # Redirigir a home_professional
+                elif request.user.profile.account_type == 'company':
+                    return redirect('home-company')  # Redirigir a home-company
         else:
             messages.error(request, 'Por favor, revisa los errores en el formulario')
     else:
         form = PostForm()
-    
+
     return render(request, 'SkillHubApp/inicio/create_post.html', {'form': form})

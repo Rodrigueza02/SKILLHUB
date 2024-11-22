@@ -16,7 +16,7 @@
             <h1>SKILLHUB</h1>
             <nav class="header-nav">
                 <ul>
-                    <li><a href="{% url 'home' %}">Inicio</a></li>
+                    <li><a href="{% url 'home-professional' %}">Inicio</a></li>
                     <li><a href="{% url 'messages' %}">Mensajes</a></li>
                     <li><a href="{% url 'connections' %}">Conexiones</a></li>
                     <li><a href="{% url 'notifications' %}">Notificaciones</a></li>
@@ -40,7 +40,7 @@
                     {% else %}
                         <p>Invitado</p>
                     {% endif %}
-                    <a href="{% url 'edit_profile' %}" class="btn view-profile">Editar Perfil</a>
+                    <a href="{% url 'edit-profile-professional' %}" class="btn view-profile">Editar Perfil</a>
                     <a href="{% url 'logout' %}">Cerrar sesión</a>
                 </div>
             </aside>
