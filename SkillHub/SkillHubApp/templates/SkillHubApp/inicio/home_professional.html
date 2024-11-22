@@ -31,7 +31,7 @@
             <aside class="sidebar">
                 <div class="profile">
                     <img src="{% static 'SkillHubApp/images/perfil.png' %}" alt="Imagen de Perfil" class="profile-image">
-                    <h2>Perfil {{ user.profile.get_account_type_display }}</h2>
+                    <h2>Perfil</h2>
                     {% if user.is_authenticated %}
                         <h3>{{ user.username }}</h3>
                         {% if user.first_name and user.last_name %}
@@ -49,8 +49,8 @@
                 <div class="post-list">
                     <div class="posts-header">
                         <h2>Publicaciones Recientes</h2>
-                        <a href="{% url 'create_post' %}" class="btn nueva-publicacion-btn">Nueva Publicación</a>
-                        <a href="{% url 'manage_applications' %}" class="btn nueva-publicacion-btn">Gestión de postulaciones</a>
+                        <a href="{% url 'create_post' %}" class="btn nueva_publicacion_btn">Nueva Publicación</a>
+                        <a href="{% url 'manage_applications' %}" class="btn nueva_publicacion_btn">Gestión de postulaciones</a>
                     </div>
             
                     {% if messages %}
@@ -67,7 +67,8 @@
                         {% for post in posts %}
                             <div class="post-card">
                                 <h3>{{ post.title }}</h3>
-                                <p>{{ post.content }}</p>
+                                <p>Publicado por: <strong>{{ post.user.username }}</strong> el {{ post.timestamp|date:"d M Y, H:i" }}</p>
+                                <p>{{ post.content|safe }}</p>
             
                                 {% if post.media_file %}
                                     {% with file_extension=post.media_file.name|lower|slice:"-3:" %}

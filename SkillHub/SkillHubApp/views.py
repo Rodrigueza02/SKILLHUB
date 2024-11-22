@@ -157,8 +157,8 @@ def add_skill(request):
         name = request.POST.get('skill_name')
         # Lógica para crear una nueva habilidad
         Skill.objects.create(user=request.user, name=name)
-        return redirect('profile')
-    return redirect('profile')
+        return redirect('home-professional')
+    return redirect('home-professional')
 
 @login_required
 def profile_professional_view(request):
