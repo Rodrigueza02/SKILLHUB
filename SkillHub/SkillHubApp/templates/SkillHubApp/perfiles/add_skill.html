@@ -3,8 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Perfil - SkillHub</title>
+    <title>Agregar Habilidad - SkillHub</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'registration/css/style.css' %}">
 </head>
 <body>
+    <div class="container">
+        <header class="header">
+            <h1>Agregar Habilidad</h1>
+        </header>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Nombre de la Habilidad:</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="error-message">
+                        {% for error in form.name.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción:</label>
+                {{ form.description }}  <!-- Campo para la descripción -->
+                {% if form.description.errors %}
+                    <div class="error-message">
+                        {% for error in form.description.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn">Agregar Habilidad</button>
+            <a href="{% url 'profile-professional' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

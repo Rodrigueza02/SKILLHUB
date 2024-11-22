@@ -59,7 +59,7 @@
                 <div class="profile-data">
                     <div class="header-container">
                         <h2>Datos del Perfil</h2>
-                        <a href="#" class="btn nueva-publicacion-btn add-skill-btn" data-toggle="modal" data-target="#addSkillModal">Agregar SKILL</a>
+                        <a href="{% url 'add_skill' %}" class="btn nueva-publicacion-btn add-skill-btn">Agregar SKILL</a>
                     </div>
                     <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
                     <p><strong>Correo:</strong> {{ user.email }}</p>

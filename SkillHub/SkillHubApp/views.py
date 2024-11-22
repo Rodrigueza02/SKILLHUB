@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm,UserC
 from django.contrib.auth import login, authenticate, login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .models import Message, Skill, Post
-from .forms import MessageForm, CustomRegisterForm, PostForm
+from .forms import MessageForm, CustomRegisterForm, PostForm, SkillForm
 from django.contrib import messages 
 
 def register(request):
@@ -154,11 +154,17 @@ def edit_profile_professional(request):
 @login_required
 def add_skill(request):
     if request.method == 'POST':
-        name = request.POST.get('skill_name')
-        # Lógica para crear una nueva habilidad
-        Skill.objects.create(user=request.user, name=name)
-        return redirect('home-professional')
-    return redirect('home-professional')
+        form = SkillForm(request.POST)
+        if form.is_valid():
+            skill = form.save(commit=False)
+            skill.user = request.user
+            skill.save()
+            messages.success(request, 'Habilidad agregada exitosamente.')
+            return redirect('profile-professional')
+    else:
+        form = SkillForm()
+    
+    return render(request, 'SkillHubApp/perfiles/add_skill.html', {'form': form})
 
 @login_required
 def profile_professional_view(request):

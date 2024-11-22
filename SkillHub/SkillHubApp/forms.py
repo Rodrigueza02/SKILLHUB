@@ -175,14 +175,30 @@ class PostForm(forms.ModelForm):
 class SkillForm(forms.ModelForm):
     class Meta:
         model = Skill
-        fields = ['name']
+        fields = ['name', 'description']  # Asegúrate de incluir 'description'
         widgets = {
             'name': forms.TextInput(attrs={
                 'placeholder': 'Nombre de la habilidad',
                 'class': 'form-control'
+            }),
+            'description': forms.Textarea(attrs={
+                'placeholder': 'Descripción de la habilidad',
+                'class': 'form-control',
+                'rows': 4  # Puedes ajustar el número de filas según sea necesario
             })
         }
 
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if not name:
+            raise forms.ValidationError("El nombre de la habilidad no puede estar vacío.")
+        return name
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if not description:
+            raise forms.ValidationError("La descripción no puede estar vacía.")
+        return description
     def clean_name(self):
         name = self.cleaned_data.get('name')
         if not name:
