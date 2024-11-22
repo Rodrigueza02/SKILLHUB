@@ -139,30 +139,13 @@ class CustomUserChangeForm(UserChangeForm):
 @login_required
 def edit_profile_professional(request):
     if request.method == 'POST':
-        # Separa la validación y guardado de los formularios
-        user_form = CustomUserChangeForm(request.POST, instance=request.user)
-        password_form = PasswordChangeForm(request.user, request.POST)
-        
-        # Valida cada formulario por separado
-        user_form_valid = user_form.is_valid()
-        password_form_valid = password_form.is_valid()
-
-        if user_form_valid:
-            user_form.save()
-            messages.success(request, 'Información de perfil actualizada.')
-
-        if password_form_valid:
-            user = password_form.save()
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Contraseña actualizada exitosamente.')
-
-        # Redirige solo si al menos un formulario es válido
-        if user_form_valid or password_form_valid:
-            return redirect('profile')
+        # Lógica para manejar la edición del perfil
+        # ...
+        return redirect('profile-professional')  # Asegúrate de usar el nombre correcto aquí
     else:
         user_form = CustomUserChangeForm(instance=request.user)
         password_form = PasswordChangeForm(request.user)
-    
+
     return render(request, 'SkillHubApp/perfiles/edit_profile_professional.html', {
         'user_form': user_form,
         'password_form': password_form
@@ -221,3 +204,8 @@ def create_post_view(request):
         form = PostForm()
 
     return render(request, 'SkillHubApp/inicio/create_post.html', {'form': form})
+
+@login_required
+def manage_applications_view(request):
+    # Lógica para gestionar postulaciones
+    return render(request, 'SkillHubApp/inicio/manage_applications.html')

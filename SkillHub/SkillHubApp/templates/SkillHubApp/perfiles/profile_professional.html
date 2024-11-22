@@ -6,6 +6,16 @@
     <title>Perfil - SkillHub</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'SkillHubApp/css/style.css' %}">
+    <style>
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .add-skill-btn {
+            margin-left: auto; /* Empuja el botón hacia la derecha */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -45,23 +55,44 @@
                 </div>
             </aside>
 
-            <section class="feed">
-                <div class="posts-header">
-                    <h2>Mis Habilidades</h2>
-                    <a href="#" class="btn nueva-publicacion-btn" data-toggle="modal" data-target="#addSkillModal">Agregar Habilidad</a>
+            <section class="profile-skills-documents">
+                <div class="profile-data">
+                    <div class="header-container">
+                        <h2>Datos del Perfil</h2>
+                        <a href="#" class="btn nueva-publicacion-btn add-skill-btn" data-toggle="modal" data-target="#addSkillModal">Agregar SKILL</a>
+                    </div>
+                    <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+                    <p><strong>Correo:</strong> {{ user.email }}</p>
+                    <p><strong>Ubicación:</strong> {{ user.profile.location }}</p>
+                    <p><strong>Biografía:</strong> {{ user.profile.bio }}</p>
+                    <p><strong>Tipo de cuenta:</strong> {{ user.profile.get_account_type_display }}</p>
                 </div>
-                
-                <div class="skill-list">
-                    {% for skill in skills %}
-                        <div class="skill-card">
-                            <strong>{{ skill.name }}</strong>
-                            {% if skill.description %}
-                                <p>{{ skill.description }}</p>
-                            {% endif %}
-                        </div>
-                    {% empty %}
-                        <p>Aún no has agregado habilidades</p>
-                    {% endfor %}
+
+                <div class="skills-section">
+                    <h2>Mis Habilidades</h2>
+                    <div class="skill-list">
+                        {% for skill in skills %}
+                            <div class="skill-card">
+                                <strong>{{ skill.name }}</strong>
+                                {% if skill.description %}
+                                    <p>{{ skill.description }}</p>
+                                {% endif %}
+                            </div>
+                        {% empty %}
+                            <p>Aún no has agregado habilidades</p>
+                        {% endfor %}
+                    </div>
+
+                    <h2>Documentos Profesionales</h2>
+                    <div class="documents-list">
+                        {% for document in user.documents.all %}
+                            <div class="document-card">
+                                <a href="{{ document.file.url }}" target="_blank">{{ document.file.name }}</a>
+                            </div>
+                        {% empty %}
+                            <p>No has subido documentos profesionales.</p>
+                        {% endfor %}
+                    </div>
                 </div>
             </section>
         </main>
@@ -76,24 +107,18 @@
                         <input type="text" name="skill_name" id="skill_name" required>
                     </div>
                     <div class="form-group">
-                        <label for="skill_description">Descripción (Opcional)</label>
+                        <label for="skill_description">Descripción</label>
                         <textarea name="skill_description" id="skill_description"></textarea>
                     </div>
                     <button type="submit" class="btn">Agregar Habilidad</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
                 </form>
+                <span class="close" onclick="document.getElementById('addSkillModal').style.display='none'">&times;</span>
             </div>
         </div>
 
         <footer class="footer">
-            <p>&copy; 2024 SKILLHUB</p>
+            <p>&copy; 2024 SkillHub. Todos los derechos reservados.</p>
         </footer>
     </div>
-
-    <script>
-        function closeModal() {
-            document.getElementById('addSkillModal').style.display = 'none';
-        }
-    </script>
 </body>
 </html>

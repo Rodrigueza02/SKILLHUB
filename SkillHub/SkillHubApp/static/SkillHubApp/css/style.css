@@ -375,6 +375,11 @@ a[href="{% url 'logout' %}"]:hover {
     font-weight: bold; /* Texto en negrita en hover */
 }
 
+.btn-group {
+    display: flex; /* Usar flexbox para alinear los botones */
+    gap: 10px; /* Espacio entre los botones */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {

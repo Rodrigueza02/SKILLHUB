@@ -10,8 +10,8 @@
 <body>
     <div class="container">
         <main class="main-content">
-            <div class="create-post-section">
-                <div class="create-post-form">
+            <div class="edit-profile-section">
+                <div class="edit-profile-form">
                     <h1>Editar Perfil</h1>
 
                     {% if messages %}
@@ -24,7 +24,7 @@
                         </div>
                     {% endif %}
 
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data"> <!-- Agregado enctype para subir archivos -->
                         {% csrf_token %}
                         
                         <div class="form-group">
@@ -45,20 +45,18 @@
                         </div>
 
                         <div class="form-group">
-                            <h2>Cambiar Contraseña</h2>
-                            {% for field in password_form %}
-                                <div class="form-field">
-                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <div class="error-message">
-                                            {% for error in field.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
+                            <label for="location">Ubicación</label>
+                            <input type="text" name="location" id="location" value="{{ user.profile.location }}" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bio">Biografía</label>
+                            <textarea name="bio" id="bio" class="form-control" required>{{ user.profile.bio }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profile_picture">Foto de Perfil</label>
+                            <input type="file" name="profile_picture" id="profile_picture" class="form-control" accept="image/*">
                         </div>
 
                         <div class="form-actions">

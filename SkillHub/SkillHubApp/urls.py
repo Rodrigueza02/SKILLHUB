@@ -13,6 +13,7 @@ from .views import (
     add_skill,
     send_message_view,
     create_post_view,
+    manage_applications_view,
     logout_view,
     
 )
@@ -33,6 +34,7 @@ urlpatterns = [
     path('profile-professional/', profile_professional_view, name='profile-professional'),
     path('profile/edit-professional/', edit_profile_professional, name='edit-profile-professional'),
     path('profile/add_skill/',add_skill, name='add_skill'),
+    path('manage-applications/', manage_applications_view, name='manage_applications'),
 
     #company
     path('home-company/', home_company_view, name= 'home-company'),

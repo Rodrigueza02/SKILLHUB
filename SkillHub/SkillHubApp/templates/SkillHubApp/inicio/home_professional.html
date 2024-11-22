@@ -31,13 +31,12 @@
             <aside class="sidebar">
                 <div class="profile">
                     <img src="{% static 'SkillHubApp/images/perfil.png' %}" alt="Imagen de Perfil" class="profile-image">
-                    <h2>Perfil</h2>
+                    <h2>Perfil {{ user.profile.get_account_type_display }}</h2>
                     {% if user.is_authenticated %}
                         <h3>{{ user.username }}</h3>
                         {% if user.first_name and user.last_name %}
                             <p>{{ user.first_name }} {{ user.last_name }}</p>
                         {% endif %}
-                        <p>Tipo de cuenta: {{ user.profile.get_account_type_display }}</p> <!-- Aquí se agrega el tipo de cuenta -->
                     {% else %}
                         <p>Invitado</p>
                     {% endif %}
@@ -51,6 +50,7 @@
                     <div class="posts-header">
                         <h2>Publicaciones Recientes</h2>
                         <a href="{% url 'create_post' %}" class="btn nueva-publicacion-btn">Nueva Publicación</a>
+                        <a href="{% url 'manage_applications' %}" class="btn nueva-publicacion-btn">Gestión de postulaciones</a>
                     </div>
                     
                     {% if messages %}
@@ -65,10 +65,10 @@
                     
                     {% for post in posts %}
                         <div class="post-card">
-                            <div class="post-header">
-                                <img src="{% static 'SkillHubApp/images/perfil.png' %}" alt="{{ post.user.username }}">
-                                <strong>{{ post.user.username }}</strong>
-                                <span>{{ post.timestamp|date:"D d M Y H:i" }}</span>
+                            <div class="posts-header">
+                                <h2>Publicaciones Recientes</h2>
+                                <a href="{% url 'create_post' %}" class="btn nueva-publicacion-btn" style="margin-right: 5px;">Nueva Publicación</a>
+                                <a href="{% url 'manage_applications' %}" class="btn nueva-publicacion-btn">Gestión de postulaciones</a>
                             </div>
                             <p>{{ post.content }}</p>
                             
