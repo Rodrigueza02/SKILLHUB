@@ -37,6 +37,7 @@
                         {% if user.first_name and user.last_name %}
                             <p>{{ user.first_name }} {{ user.last_name }}</p>
                         {% endif %}
+                        <p>Tipo de cuenta: {{ user.profile.get_account_type_display }}</p> <!-- Aquí se agrega el tipo de cuenta -->
                     {% else %}
                         <p>Invitado</p>
                     {% endif %}

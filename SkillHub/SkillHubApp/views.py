@@ -15,7 +15,7 @@ def register(request):
             # Redirigir según el tipo de cuenta
             if form.cleaned_data['account_type'] == 'professional':
                 return redirect('home-professional')  # Redirigir a home_professional
-            elif form.cleaned_data['account_type'] == 'company':
+            elif form.cleaned_data['account_type'] == 'empresa':
                 return redirect('home-company')  # Redirigir a home-company
     else:
         form = CustomRegisterForm()
@@ -32,7 +32,7 @@ def login_view(request):
             if hasattr(user, 'profile'):
                 if user.profile.account_type == 'professional':
                     return redirect('home-professional')  # Redirigir a home_professional
-                elif user.profile.account_type == 'company':
+                elif user.profile.account_type == 'empresa':
                     return redirect('home-company')  # Redirigir a home-company
         else:
             error_message = "Nombre de usuario o contraseña incorrectos."

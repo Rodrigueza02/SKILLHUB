@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from ckeditor.widgets import CKEditorWidget
-from .models import Message, Post, Skill
+from .models import Message, Post, Skill, Profile
 
 class CustomRegisterForm(UserCreationForm):
     ACCOUNT_TYPES = [
@@ -69,7 +69,11 @@ class CustomRegisterForm(UserCreationForm):
         
         if commit:
             user.save()
-        
+            # Guarda el tipo de cuenta en el perfil
+            profile = Profile.objects.get(user=user)
+            profile.account_type = self.cleaned_data['account_type']
+            profile.save()  # Guarda el perfil con el tipo de cuenta
+
         return user
 
 class MessageForm(forms.ModelForm):
